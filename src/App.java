@@ -3,7 +3,7 @@ import java.util.Arrays;
 public class App {
     public static void main(String[] args) throws Exception {
 
-        // TODO: Quando for refazer a lógica do maquinista lembrar que os dois trens devem usar o mesmo trilho
+        // TODO: Fazer andar dois trens
         System.out.println("PjBL - Monitores com 4 variaveis");
         System.out.println("Aluno: Pedro B.");
 
@@ -17,7 +17,7 @@ public class App {
         Arrays.fill(posB, false);
         posB[1] = true;
 
-        Maquinista maquinistaHr = new Maquinista(0, posA, false, false);
+        Maquinista maquinistaHr = new Maquinista(1, posA, true, 2);
         // Maquinista maquinistaAHr = new Maquinista(1, posB, false, false);
         GeraThread geraThread = new GeraThread(maquinistaHr);
         

@@ -1,4 +1,3 @@
-import java.lang.reflect.Array;
 import java.util.Arrays;
 
 public class Maquinista {
@@ -34,12 +33,21 @@ public class Maquinista {
      */
     private boolean andandoTrem;
 
-    // TODO: Refazer a logica do motorista, pois com a lógica atual não vai ser possivel validar o ponto de junção
-    public Maquinista(int sentidoTrem, boolean[] posicaoTrem, boolean pontoDeJuncao, boolean andandoTrem) {
+    public Maquinista(int sentidoTrem, boolean[] posicaoTrem, boolean andandoTrem, int posicaoInicial) {
         this.sentidoTrem = sentidoTrem;
         this.posicaoTrem = posicaoTrem;
         this.andandoTrem = andandoTrem;
-        andandoTrem = true;
+        if (posicaoInicial == 1) {
+            this.casaTrem = 0;
+        } else if (posicaoInicial == 2) {
+            this.casaTrem = 1;
+        } else if (posicaoInicial == 3) {
+            this.casaTrem = 2;
+        } else if (posicaoInicial == 4) {
+            this.casaTrem = 3;
+        } else {
+            this.casaTrem = 0;
+        }
     }
 
 
@@ -49,57 +57,58 @@ public class Maquinista {
         System.out.println("Motorista<STATUS>: Andando trem");
         System.out.println("Motorista<STATUS>: Trem no sentido " + (sentidoTrem == 0 ? "A" : "B"));
 
-        if ( casaTrem > posicaoTrem.length - 1) {
-            casaTrem = 0;
-        }
-
-        if (!posicaoTrem[novaCasa]) {
-            /*
-            System.out.println("Motorista<STATUS>: Trem na posição " + (novaCasa + 1));
-            posicaoTrem[casaTrem] = false;
-            casaTrem = novaCasa;
-            posicaoTrem[casaTrem] = true;
-            andandoTrem = true;
-            */
-
-            // Sentido horário
-            if (sentidoTrem == 0) {
-                if ((setorTrem % 2) == 0) {
-                    Arrays.fill(LinhaTrem.posicaoLinhaB, false);
-                    //LinhaTrem.posicaoLinhaB[casaTrem] = false;
-                    //casaTrem = novaCasa;
-                    LinhaTrem.posicaoLinhaA[casaTrem] = true;
-                    //casaTrem = novaCasa;
-                    setorTrem++;
-                    System.out.println(Arrays.toString(LinhaTrem.posicaoLinhaA));
-                    System.out.println(Arrays.toString(LinhaTrem.posicaoLinhaB));
-                } else {
-                    novaCasa = casaTrem + novaCasa;
-                    Arrays.fill(LinhaTrem.posicaoLinhaA, false);
-                    //LinhaTrem.posicaoLinhaA[casaTrem] = false;
-                    LinhaTrem.posicaoLinhaB[casaTrem] = true;
-                    casaTrem = novaCasa;
-                    setorTrem--;
-                    System.out.println(Arrays.toString(LinhaTrem.posicaoLinhaA));
-                    System.out.println(Arrays.toString(LinhaTrem.posicaoLinhaB));
-                }
-            
-            // Sentido anti-horário
-            } else {
-                if ((casaTrem % 2) == 0) {
-                    LinhaTrem.posicaoLinhaA[casaTrem] = false;
-                    casaTrem = novaCasa;
-                    LinhaTrem.posicaoLinhaB[casaTrem] = true;
-                } else {
-                    LinhaTrem.posicaoLinhaB[casaTrem] = false;
-                    LinhaTrem.posicaoLinhaA[casaTrem] = true;
-                    casaTrem = novaCasa;
-                }
+        if (sentidoTrem != 0) {
+            if (casaTrem == -1) {
+                casaTrem = posicaoTrem.length - 1;
             }
-            
+        } else {
+            if ( casaTrem > posicaoTrem.length - 1) {
+                casaTrem = 0;
+            }
         }
 
-        Thread.sleep(1000);
+        // Sentido horário
+        if (sentidoTrem == 0) {
+            if ((setorTrem % 2) == 0) {
+                Arrays.fill(LinhaTrem.posicaoLinhaB, false);
+                LinhaTrem.posicaoLinhaA[casaTrem] = true;
+                setorTrem++;
+                System.out.println("      |  1  |  2  |  3  |  4  |");
+                System.out.println("A = " + Arrays.toString(LinhaTrem.posicaoLinhaA));
+                System.out.println("B = " + Arrays.toString(LinhaTrem.posicaoLinhaB));
+            } else {
+                novaCasa = casaTrem + novaCasa;
+                Arrays.fill(LinhaTrem.posicaoLinhaA, false);
+                LinhaTrem.posicaoLinhaB[casaTrem] = true;
+                casaTrem = novaCasa;
+                setorTrem--;
+                System.out.println("      |  1  |  2  |  3  |  4  |");
+                System.out.println("A = " + Arrays.toString(LinhaTrem.posicaoLinhaA));
+                System.out.println("B = " + Arrays.toString(LinhaTrem.posicaoLinhaB));
+            }
+        
+        // Sentido anti-horário
+        } else {
+            if ((setorTrem % 2) == 0) {
+                Arrays.fill(LinhaTrem.posicaoLinhaA, false);
+                LinhaTrem.posicaoLinhaB[casaTrem] = true;
+                setorTrem++;
+                System.out.println("      |  1  |  2  |  3  |  4  |");
+                System.out.println("A = " + Arrays.toString(LinhaTrem.posicaoLinhaA));
+                System.out.println("B = " + Arrays.toString(LinhaTrem.posicaoLinhaB));
+            } else {
+                novaCasa = casaTrem - novaCasa;
+                Arrays.fill(LinhaTrem.posicaoLinhaB, false);
+                LinhaTrem.posicaoLinhaA[casaTrem] = true;
+                casaTrem = novaCasa;
+                setorTrem--;
+                System.out.println("      |  1  |  2  |  3  |  4  |");
+                System.out.println("A = " + Arrays.toString(LinhaTrem.posicaoLinhaA));
+                System.out.println("B = " + Arrays.toString(LinhaTrem.posicaoLinhaB));
+            }
+        }
+
+        Thread.sleep(2000);
         
     }
 
