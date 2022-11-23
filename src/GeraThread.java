@@ -2,14 +2,14 @@ import java.util.Random;
 
 public class GeraThread extends Thread {
     private Maquinista motoristaHr;
-    //private Maquinista motoristaAHr;
+    private Maquinista motoristaAHr;
 
     private Random aleatorio;
     public int tempo;
 
-    public GeraThread(Maquinista motoristaHr) {
+    public GeraThread(Maquinista motoristaHr, Maquinista motoristaAHr) {
         this.motoristaHr = motoristaHr;
-        // this.motoristaAHr = motoristaAHr;
+        this.motoristaAHr = motoristaAHr;
         aleatorio = new Random();
     }
 
@@ -31,6 +31,17 @@ public class GeraThread extends Thread {
      * Gera threads para andar o trem
      */
     public void geraThreadAndarTrem(){
+        try {
+            Trem trem1 = new Trem(motoristaHr);
+            trem1.start();
+            trem1.join();
+
+            Trem trem2 = new Trem(motoristaAHr);
+            trem2.start();
+            trem2.join();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         /*
         int opcoes = aleatorio.nextInt(2);
         if (opcoes == 0) {
@@ -41,8 +52,5 @@ public class GeraThread extends Thread {
             trem2.start();
         }
         */
-
-        Trem trem1 = new Trem(motoristaHr);
-        trem1.start();
     }
 }

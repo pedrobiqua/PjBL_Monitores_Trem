@@ -4,8 +4,10 @@ public class App {
     public static void main(String[] args) throws Exception {
 
         // TODO: Fazer andar dois trens
+        System.out.println("--------------------------------------------");
         System.out.println("PjBL - Monitores com 4 variaveis");
         System.out.println("Aluno: Pedro B.");
+        System.out.println("--------------------------------------------");
 
         // Sentido A
         boolean[] posA = new boolean[4];
@@ -17,9 +19,9 @@ public class App {
         Arrays.fill(posB, false);
         posB[1] = true;
 
-        Maquinista maquinistaHr = new Maquinista(1, posA, true, 2);
-        // Maquinista maquinistaAHr = new Maquinista(1, posB, false, false);
-        GeraThread geraThread = new GeraThread(maquinistaHr);
+        Maquinista maquinistaHr = new Maquinista(0, posA, true, 2);
+        Maquinista maquinistaAHr = new Maquinista(1, posB, true, 2);
+        GeraThread geraThread = new GeraThread(maquinistaHr, maquinistaAHr);
         
         geraThread.start();
     }

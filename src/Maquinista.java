@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Maquinista {
@@ -18,9 +19,24 @@ public class Maquinista {
     private boolean[] posicaoTrem;
 
     /**
+     * Posição do trem no ponto A
+     */
+    private boolean[] posicaoTremA;
+
+    /**
+     * Posição do trem no ponto B
+     */
+    private boolean[] posicaoTremB;
+
+    /**
      * Posição onde o trem está
      */
     private int casaTrem;
+
+    /**
+     * Posição onde o trem estava
+     */
+    private int casaTremAnterior;
 
     /**
      * Setor do trem
@@ -38,23 +54,29 @@ public class Maquinista {
         this.posicaoTrem = posicaoTrem;
         this.andandoTrem = andandoTrem;
         if (posicaoInicial == 1) {
+            this.casaTremAnterior = 3;
             this.casaTrem = 0;
         } else if (posicaoInicial == 2) {
+            this.casaTremAnterior = 0;
             this.casaTrem = 1;
         } else if (posicaoInicial == 3) {
+            this.casaTremAnterior = 1;
             this.casaTrem = 2;
         } else if (posicaoInicial == 4) {
+            this.casaTremAnterior = 2;
             this.casaTrem = 3;
         } else {
+            this.casaTremAnterior = 3;
             this.casaTrem = 0;
         }
+        this.posicaoTremA = new boolean[4];
+        this.posicaoTremB = new boolean[4];
     }
 
 
     public synchronized void andarTrem(int novaCasa) throws InterruptedException {
 
         // TODO: Tem que adicionar as condiçoes do trem andar
-        System.out.println("Motorista<STATUS>: Andando trem");
         System.out.println("Motorista<STATUS>: Trem no sentido " + (sentidoTrem == 0 ? "A" : "B"));
 
         if (sentidoTrem != 0) {
@@ -70,41 +92,97 @@ public class Maquinista {
         // Sentido horário
         if (sentidoTrem == 0) {
             if ((setorTrem % 2) == 0) {
-                Arrays.fill(LinhaTrem.posicaoLinhaB, false);
+                //Arrays.fill(LinhaTrem.posicaoLinhaB, false);
+                LinhaTrem.posicaoLinhaB[casaTremAnterior] = false;
+                this.posicaoTremB[casaTremAnterior] = false;
                 LinhaTrem.posicaoLinhaA[casaTrem] = true;
+                this.posicaoTremA[casaTrem] = true;
                 setorTrem++;
-                System.out.println("      |  1  |  2  |  3  |  4  |");
-                System.out.println("A = " + Arrays.toString(LinhaTrem.posicaoLinhaA));
-                System.out.println("B = " + Arrays.toString(LinhaTrem.posicaoLinhaB));
+
+                ArrayList<String> texto = new ArrayList<String>();
+                String cabecalho = "      |  1  |  2  |  3  |  4  |";
+                texto.add(cabecalho);
+                String linhaA = "A = " + Arrays.toString(this.posicaoTremA);
+                texto.add(linhaA);
+                String linhaB = "B = " + Arrays.toString(this.posicaoTremB);
+                texto.add(linhaB);
+
+                System.out.println(cabecalho);
+                System.out.println(linhaA);
+                System.out.println(linhaB);
+                EscreveArquivoLog escreveArquivoLog = new EscreveArquivoLog();
+                escreveArquivoLog.escreverArquivoTxt("TremA.txt", texto);
+                
             } else {
+                casaTremAnterior = casaTrem;
                 novaCasa = casaTrem + novaCasa;
-                Arrays.fill(LinhaTrem.posicaoLinhaA, false);
+                //Arrays.fill(LinhaTrem.posicaoLinhaA, false);
+                LinhaTrem.posicaoLinhaA[casaTrem] = false;
+                this.posicaoTremA[casaTrem] = false;
                 LinhaTrem.posicaoLinhaB[casaTrem] = true;
+                this.posicaoTremB[casaTrem] = true;
                 casaTrem = novaCasa;
                 setorTrem--;
-                System.out.println("      |  1  |  2  |  3  |  4  |");
-                System.out.println("A = " + Arrays.toString(LinhaTrem.posicaoLinhaA));
-                System.out.println("B = " + Arrays.toString(LinhaTrem.posicaoLinhaB));
+                ArrayList<String> texto = new ArrayList<String>();
+                String cabecalho = "      |  1  |  2  |  3  |  4  |";
+                texto.add(cabecalho);
+                String linhaA = "A = " + Arrays.toString(this.posicaoTremA);
+                texto.add(linhaA);
+                String linhaB = "B = " + Arrays.toString(this.posicaoTremB);
+                texto.add(linhaB);
+
+                System.out.println(cabecalho);
+                System.out.println(linhaA);
+                System.out.println(linhaB);
+                EscreveArquivoLog escreveArquivoLog = new EscreveArquivoLog();
+                escreveArquivoLog.escreverArquivoTxt("TremA.txt", texto);
             }
         
         // Sentido anti-horário
         } else {
             if ((setorTrem % 2) == 0) {
-                Arrays.fill(LinhaTrem.posicaoLinhaA, false);
+                //Arrays.fill(LinhaTrem.posicaoLinhaA, false);
+                LinhaTrem.posicaoLinhaA[casaTremAnterior] = false;
+                this.posicaoTremA[casaTremAnterior] = false;
                 LinhaTrem.posicaoLinhaB[casaTrem] = true;
+                this.posicaoTremB[casaTrem] = true;
                 setorTrem++;
-                System.out.println("      |  1  |  2  |  3  |  4  |");
-                System.out.println("A = " + Arrays.toString(LinhaTrem.posicaoLinhaA));
-                System.out.println("B = " + Arrays.toString(LinhaTrem.posicaoLinhaB));
+                ArrayList<String> texto = new ArrayList<String>();
+                String cabecalho = "      |  1  |  2  |  3  |  4  |";
+                texto.add(cabecalho);
+                String linhaA = "A = " + Arrays.toString(this.posicaoTremA);
+                texto.add(linhaA);
+                String linhaB = "B = " + Arrays.toString(this.posicaoTremB);
+                texto.add(linhaB);
+
+                System.out.println(cabecalho);
+                System.out.println(linhaA);
+                System.out.println(linhaB);
+                EscreveArquivoLog escreveArquivoLog = new EscreveArquivoLog();
+                escreveArquivoLog.escreverArquivoTxt("TremB.txt", texto);
             } else {
+                casaTremAnterior = casaTrem;
                 novaCasa = casaTrem - novaCasa;
-                Arrays.fill(LinhaTrem.posicaoLinhaB, false);
+                //Arrays.fill(LinhaTrem.posicaoLinhaB, false);
+                LinhaTrem.posicaoLinhaB[casaTrem] = false;
+                this.posicaoTremB[casaTrem] = false;
                 LinhaTrem.posicaoLinhaA[casaTrem] = true;
+                this.posicaoTremA[casaTrem] = true;
                 casaTrem = novaCasa;
                 setorTrem--;
-                System.out.println("      |  1  |  2  |  3  |  4  |");
-                System.out.println("A = " + Arrays.toString(LinhaTrem.posicaoLinhaA));
-                System.out.println("B = " + Arrays.toString(LinhaTrem.posicaoLinhaB));
+                ArrayList<String> texto = new ArrayList<String>();
+                String cabecalho = "      |  1  |  2  |  3  |  4  |";
+                texto.add(cabecalho);
+                String linhaA = "A = " + Arrays.toString(this.posicaoTremA);
+                texto.add(linhaA);
+                String linhaB = "B = " + Arrays.toString(this.posicaoTremB);
+                texto.add(linhaB);
+
+                System.out.println(cabecalho);
+                System.out.println(linhaA);
+                System.out.println(linhaB);
+                EscreveArquivoLog escreveArquivoLog = new EscreveArquivoLog();
+                escreveArquivoLog.escreverArquivoTxt("TremB.txt", texto);
             }
         }
 
