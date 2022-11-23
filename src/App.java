@@ -3,7 +3,6 @@ import java.util.Arrays;
 public class App {
     public static void main(String[] args) throws Exception {
 
-        // TODO: Fazer andar dois trens
         System.out.println("--------------------------------------------");
         System.out.println("PjBL - Monitores com 4 variaveis");
         System.out.println("Aluno: Pedro B.");
