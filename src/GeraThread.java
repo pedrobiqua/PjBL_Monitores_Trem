@@ -13,6 +13,8 @@ public class GeraThread extends Thread {
         aleatorio = new Random();
     }
 
+    int contador = 0;
+
     @Override
     public void run() {
         try {
@@ -32,13 +34,49 @@ public class GeraThread extends Thread {
      */
     public void geraThreadAndarTrem(){
         try {
-            Trem trem1 = new Trem(motoristaHr);
-            trem1.start();
-            trem1.join();
+            int usandoJuncao = LinhaTrem.quemEstaUsandoAJuncao();
+            if (usandoJuncao == 0) {
+                Trem trem = new TremParado(motoristaHr);
+                trem.start();
 
-            Trem trem2 = new Trem(motoristaAHr);
-            trem2.start();
-            trem2.join();
+                Trem trem2 = new TremAndando(motoristaAHr);
+                trem2.start();
+
+            } else if (usandoJuncao == 1) {
+                Trem trem = new TremParado(motoristaAHr);
+                trem.start();
+
+                Trem trem1 = new TremAndando(motoristaHr);
+                trem1.start();
+
+            } else {
+                if (contador % 2 == 0) {
+                    Trem trem = new TremAndando(motoristaHr);
+                    trem.start();
+                } else {
+                    Trem trem = new TremAndando(motoristaAHr);
+                    trem.start();
+                }
+                contador++;
+            }
+            /*
+            if (usandoJuncao == 1) {
+                Trem trem1 = new TremAndando(motoristaHr);
+                trem1.start();
+                trem1.join();
+            } else if (usandoJuncao == 0) {
+                Trem trem2 = new TremAndando(motoristaAHr);
+                trem2.start();
+                trem2.join();
+            } else {
+                Trem trem1 = new TremAndando(motoristaHr);
+                Trem trem2 = new TremAndando(motoristaAHr);
+                trem1.start();
+                trem2.start();
+                trem1.join();
+                trem2.join();
+            }
+            */
         } catch (Exception e) {
             e.printStackTrace();
         }
