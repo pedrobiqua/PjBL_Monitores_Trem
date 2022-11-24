@@ -20,8 +20,8 @@ public class App {
 
         Arrays.fill(LinhaTrem.pontoDeJuncao, -1);
 
-        Maquinista maquinistaHr = new Maquinista(0, posA, true, 1);
-        Maquinista maquinistaAHr = new Maquinista(1, posB, true, 4);
+        Maquinista maquinistaHr = new Maquinista(0, posA, true, 3);
+        Maquinista maquinistaAHr = new Maquinista(1, posB, true, 3);
         GeraThread geraThread = new GeraThread(maquinistaHr, maquinistaAHr);
         
         geraThread.start();

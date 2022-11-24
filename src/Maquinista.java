@@ -77,121 +77,137 @@ public class Maquinista {
     public synchronized void andarTrem(int novaCasa) throws InterruptedException {
 
         // TODO: Rever as condições de andar e parar trem, prefiro apagar tudo e começar do zero
-        if (sentidoTrem == 0) {
-            if ( andandoTrem && 
-                (casaTrem == LinhaTrem.posicaoTrem2) &&
-                ((LinhaTrem.linhaTrem1 == 'A' && LinhaTrem.linhaTrem2 == 'B') || (LinhaTrem.linhaTrem1 == 'B' && LinhaTrem.linhaTrem2 == 'A')) &&
-                (usandoTrilho()) &&
-                !LinhaTrem.usandoJunção()
-            )
-            {
-                System.out.println("ESTOU EM UM PONTO DE JUNÇÃO");
-                LinhaTrem.pontoDeJuncao[casaTrem] = sentidoTrem;
-                andandoTrem = false;
-            }
-        } else {
-            if ( andandoTrem && 
-                (casaTrem == LinhaTrem.posicaoTrem1) &&
-                ((LinhaTrem.linhaTrem1 == 'A' && LinhaTrem.linhaTrem2 == 'B') || (LinhaTrem.linhaTrem1 == 'B' && LinhaTrem.linhaTrem2 == 'A')) &&
-                (usandoTrilho()) &&
-                !LinhaTrem.usandoJunção()
-            )
-            {
-                System.out.println("ESTOU EM UM PONTO DE JUNÇÃO");
-                LinhaTrem.pontoDeJuncao[casaTrem] = sentidoTrem;
-                andandoTrem = false;
-            }
-        }
 
+        // A variavel andandoTrem é controlada por outras variaveis,
+        // fiz dessa maneira para não ficar com uma condicional muito grande
+        andandoTrem = ((sentidoTrem == 0) ? LinhaTrem.trem1Andando : LinhaTrem.trem2Andando);
         while (andandoTrem == false) {
             wait();
         }
 
-        System.out.println("Motorista<STATUS>: Trem no sentido " + (sentidoTrem == 0 ? "A" : "B"));
-
-        if (sentidoTrem != 0) {
-            if (casaTrem == -1) {
-                casaTrem = posicaoTrem.length - 1;
-            }
-        } else {
-            if ( casaTrem > posicaoTrem.length - 1) {
+        if (sentidoTrem == 0) {
+            if (casaTrem > LinhaTrem.posicaoLinhaA.length - 1) {
                 casaTrem = 0;
             }
+        } else {
+            if (casaTrem < 0) {
+                casaTrem = LinhaTrem.posicaoLinhaB.length - 1;
+            }
         }
 
-        // Sentido horário
+        // Coondicionais usadas para controlar o trem
         if (sentidoTrem == 0) {
-            if ((setorTrem % 2) == 0) {
-                //Arrays.fill(LinhaTrem.posicaoLinhaB, false);
-                LinhaTrem.posicaoTrem1 = casaTrem;
-                LinhaTrem.linhaTrem1 = 'A';
-                LinhaTrem.posicaoLinhaB[casaTremAnterior] = false;
-                this.posicaoTremB[casaTremAnterior] = false;
-                LinhaTrem.posicaoLinhaA[casaTrem] = true;
-                this.posicaoTremA[casaTrem] = true;
-                setorTrem++;
-                printPosicaoTrem();
-                
-            } else {
-                casaTremAnterior = casaTrem;
-                novaCasa = casaTrem + novaCasa;
-                //Arrays.fill(LinhaTrem.posicaoLinhaA, false);
-                LinhaTrem.posicaoTrem1 = casaTrem;
-                LinhaTrem.linhaTrem1 = 'B';
-                LinhaTrem.posicaoLinhaA[casaTrem] = false;
-                this.posicaoTremA[casaTrem] = false;
-                LinhaTrem.posicaoLinhaB[casaTrem] = true;
-                this.posicaoTremB[casaTrem] = true;
-                casaTrem = novaCasa;
-                setorTrem--;
-                printPosicaoTrem();
+            if ( andandoTrem && 
+                (LinhaTrem.posicaoTrem1 == LinhaTrem.posicaoTrem2) &&
+                ((LinhaTrem.linhaTrem1 == 'A' && LinhaTrem.linhaTrem2 == 'B')) &&
+                (usandoTrilho()) &&
+                !LinhaTrem.usandoJunção()
+            )
+            {
+                System.out.println("SENTIDO A: ESTOU EM UM PONTO DE JUNÇÃO");
+                LinhaTrem.pontoDeJuncao[casaTrem] = sentidoTrem;
+                LinhaTrem.linhaTrem1 = 'J';
+                andandoTrem = false;
+                LinhaTrem.trem1Andando = andandoTrem;
             }
-        
-        // Sentido anti-horário
         } else {
-            if ((setorTrem % 2) == 0) {
-                //Arrays.fill(LinhaTrem.posicaoLinhaA, false);
-                LinhaTrem.posicaoTrem2 = casaTrem;
-                LinhaTrem.posicaoLinhaA[casaTremAnterior] = false;
-                this.posicaoTremA[casaTremAnterior] = false;
-                LinhaTrem.posicaoLinhaB[casaTrem] = true;
-                LinhaTrem.linhaTrem2 = 'B';
-                this.posicaoTremB[casaTrem] = true;
-                setorTrem++;
-                printPosicaoTrem();
-            } else {
-                casaTremAnterior = casaTrem;
-                novaCasa = casaTrem - novaCasa;
-                //Arrays.fill(LinhaTrem.posicaoLinhaB, false);
-                LinhaTrem.posicaoTrem2 = casaTrem;
-                LinhaTrem.linhaTrem2 = 'A';
-                LinhaTrem.posicaoLinhaB[casaTrem] = false;
-                this.posicaoTremB[casaTrem] = false;
-                LinhaTrem.posicaoLinhaA[casaTrem] = true;
-                this.posicaoTremA[casaTrem] = true;
-                casaTrem = novaCasa;
-                setorTrem--;
-                printPosicaoTrem();
+            if ( andandoTrem && 
+                (LinhaTrem.posicaoTrem2 == LinhaTrem.posicaoTrem1) &&
+                ((LinhaTrem.linhaTrem2 == 'B' && LinhaTrem.linhaTrem1 == 'A')) &&
+                (usandoTrilho()) &&
+                !LinhaTrem.usandoJunção()
+            )
+            {
+                System.out.println("SENTIDO B: ESTOU EM UM PONTO DE JUNÇÃO");
+                LinhaTrem.pontoDeJuncao[casaTrem] = sentidoTrem;
+                LinhaTrem.linhaTrem2 = 'J';
+                andandoTrem = false;
+                LinhaTrem.trem2Andando = andandoTrem;
             }
         }
-        
-        // Quando os trens se encontram na junção ele libera o outro trem q estava esperando
-        if (sentidoTrem == 0) {
-            if (casaTrem != LinhaTrem.posicaoTrem2) {
-                //LinhaTrem.pontoDeJuncao[LinhaTrem.posicaoTrem2] = -1;
-                //andandoTrem = true;
-                //notifyAll();
+
+        // Se não passar pelas condicionais o trem não anda
+        if (LinhaTrem.pontoDeJuncao[casaTrem] != sentidoTrem) {
+            System.out.println("Motorista<STATUS>: Trem no sentido " + (sentidoTrem == 0 ? "A" : "B"));
+
+            if (sentidoTrem != 0) {
+                if (casaTrem == -1) {
+                    casaTrem = posicaoTrem.length - 1;
+                }
+            } else {
+                if ( casaTrem > posicaoTrem.length - 1) {
+                    casaTrem = 0;
+                }
             }
-        } else {
-            if (casaTrem != LinhaTrem.posicaoTrem1) {
-                //LinhaTrem.pontoDeJuncao[LinhaTrem.posicaoTrem1] = -1;
-                //andandoTrem = true;
-                //notifyAll();
+    
+            // Sentido horário
+            if (sentidoTrem == 0) {
+                if ((setorTrem % 2) == 0) {
+                    //Arrays.fill(LinhaTrem.posicaoLinhaB, false);
+                    LinhaTrem.posicaoTrem1 = casaTrem;
+                    LinhaTrem.linhaTrem1 = 'A';
+                    LinhaTrem.posicaoLinhaB[casaTremAnterior] = false;
+                    this.posicaoTremB[casaTremAnterior] = false;
+                    LinhaTrem.posicaoLinhaA[casaTrem] = true;
+                    this.posicaoTremA[casaTrem] = true;
+                    setorTrem++;
+                    printPosicaoTrem();
+                    
+                } else {
+                    casaTremAnterior = casaTrem;
+                    novaCasa = casaTrem + novaCasa;
+                    //Arrays.fill(LinhaTrem.posicaoLinhaA, false);
+                    LinhaTrem.posicaoTrem1 = casaTrem;
+                    LinhaTrem.linhaTrem1 = 'B';
+                    LinhaTrem.posicaoLinhaA[casaTrem] = false;
+                    this.posicaoTremA[casaTrem] = false;
+                    LinhaTrem.posicaoLinhaB[casaTrem] = true;
+                    this.posicaoTremB[casaTrem] = true;
+                    casaTrem = novaCasa;
+                    setorTrem--;
+                    if (LinhaTrem.quemEstaUsandoAJuncao() == 1) {
+                        LinhaTrem.linhaTrem2 = 'B';
+                        LinhaTrem.pontoDeJuncao[LinhaTrem.posicaoTrem2] = -1;
+                        LinhaTrem.trem2Andando = true;
+                    }
+                    printPosicaoTrem();
+                }
+            
+            // Sentido anti-horário
+            } else {
+                if ((setorTrem % 2) == 0) {
+                    //Arrays.fill(LinhaTrem.posicaoLinhaA, false);
+                    LinhaTrem.posicaoTrem2 = casaTrem;
+                    LinhaTrem.posicaoLinhaA[casaTremAnterior] = false;
+                    this.posicaoTremA[casaTremAnterior] = false;
+                    LinhaTrem.posicaoLinhaB[casaTrem] = true;
+                    LinhaTrem.linhaTrem2 = 'B';
+                    this.posicaoTremB[casaTrem] = true;
+                    setorTrem++;
+                    printPosicaoTrem();
+                } else {
+                    casaTremAnterior = casaTrem;
+                    novaCasa = casaTrem - novaCasa;
+                    //Arrays.fill(LinhaTrem.posicaoLinhaB, false);
+                    LinhaTrem.posicaoTrem2 = casaTrem;
+                    LinhaTrem.linhaTrem2 = 'A';
+                    LinhaTrem.posicaoLinhaB[casaTrem] = false;
+                    this.posicaoTremB[casaTrem] = false;
+                    LinhaTrem.posicaoLinhaA[casaTrem] = true;
+                    this.posicaoTremA[casaTrem] = true;
+                    casaTrem = novaCasa;
+                    setorTrem--;
+                    if (LinhaTrem.quemEstaUsandoAJuncao() == 0) {
+                        LinhaTrem.linhaTrem1 = 'B';
+                        LinhaTrem.pontoDeJuncao[LinhaTrem.posicaoTrem1] = -1;
+                        LinhaTrem.trem1Andando = true;
+                    }
+                    printPosicaoTrem();
+                }
             }
         }
         
         notifyAll();
-        Thread.sleep(4000);
         
     }
 
@@ -201,15 +217,13 @@ public class Maquinista {
                 (casaTrem == 1 || casaTrem == 2 || casaTrem == 3 || casaTrem == 0) &&
                 (usandoTrilho()) &&
                 (LinhaTrem.usandoJunção()) &&
-                casaTrem == LinhaTrem.posicaoTrem2
+                LinhaTrem.linhaTrem1 == 'J'
             ) 
             {
                 System.out.println("TREM NO SENTIDO A ESPERANDO B PASSAR");
                 //LinhaTrem.pontoDeJuncao[casaTrem] = sentidoTrem;
                 wait();
             }    
-            System.out.println("AQUI SENTIDO A");
-            LinhaTrem.pontoDeJuncao[LinhaTrem.posicaoTrem2] = -1;
             andandoTrem = true;
 
         } else {
@@ -217,19 +231,17 @@ public class Maquinista {
                 (casaTrem == 1 || casaTrem == 2 || casaTrem == 3 || casaTrem == 0) &&
                 (usandoTrilho()) &&
                 (LinhaTrem.usandoJunção()) &&
-                casaTrem == LinhaTrem.posicaoTrem1
+                LinhaTrem.linhaTrem2 == 'J'
             ) 
             {
                 System.out.println("TREM NO SENTIDO B ESPERANDO A PASSAR");
                 //LinhaTrem.pontoDeJuncao[casaTrem] = sentidoTrem;
                 wait();
             }
-            System.out.println("AQUI SENTIDO B");
             LinhaTrem.pontoDeJuncao[LinhaTrem.posicaoTrem1] = -1;
             andandoTrem = true;
         }
         
-
         notifyAll();
     }
 
@@ -285,9 +297,9 @@ public class Maquinista {
         String linhaB = "B = " + Arrays.toString(this.posicaoTremB);
         texto.add(linhaB);
 
-        System.out.println(cabecalho);
-        System.out.println(linhaA);
-        System.out.println(linhaB);
+        //System.out.println(cabecalho);
+        //System.out.println(linhaA);
+        //System.out.println(linhaB);
         EscreveArquivoLog escreveArquivoLog = new EscreveArquivoLog();
         if (sentidoTrem == 0) {
             escreveArquivoLog.escreverArquivoTxt("TremA.txt", texto);

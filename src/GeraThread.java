@@ -41,6 +41,13 @@ public class GeraThread extends Thread {
 
                 Trem trem2 = new TremAndando(motoristaAHr);
                 trem2.start();
+                //trem2.join();
+
+                //Trem trem3 = new TremAndando(motoristaAHr);
+                //trem3.start();
+                //trem3.join();
+
+                contador++;
 
             } else if (usandoJuncao == 1) {
                 Trem trem = new TremParado(motoristaAHr);
@@ -48,14 +55,22 @@ public class GeraThread extends Thread {
 
                 Trem trem1 = new TremAndando(motoristaHr);
                 trem1.start();
+                //trem1.join();
 
+                //Trem trem2 = new TremAndando(motoristaHr);
+                //trem2.start();
+                //trem2.join();
+
+                contador++;
             } else {
                 if (contador % 2 == 0) {
                     Trem trem = new TremAndando(motoristaHr);
                     trem.start();
+                    //trem.join();
                 } else {
                     Trem trem = new TremAndando(motoristaAHr);
                     trem.start();
+                    //trem.join();
                 }
                 contador++;
             }

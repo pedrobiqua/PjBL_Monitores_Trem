@@ -34,6 +34,16 @@ public class LinhaTrem {
      */
     public static char linhaTrem2 = ' ';
 
+    /**
+     * Verifica se o trem 1 está andando
+     */
+    public static boolean trem1Andando = true;
+
+    /**
+     * Verifica se o trem 2 está andando
+     */
+    public static boolean trem2Andando = true;
+
     public static boolean usandoJunção() {
         for (int i = 0; i < pontoDeJuncao.length; i++) {
             if (pontoDeJuncao[i] == 0 || pontoDeJuncao[i] == 1) {
