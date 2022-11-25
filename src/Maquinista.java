@@ -97,7 +97,7 @@ public class Maquinista {
 
         // Coondicionais usadas para controlar o trem
         if (sentidoTrem == 0) {
-            if ( andandoTrem && 
+            while ( andandoTrem && 
                 (LinhaTrem.posicaoTrem1 == LinhaTrem.posicaoTrem2) &&
                 ((LinhaTrem.linhaTrem1 == 'A' && LinhaTrem.linhaTrem2 == 'B')) &&
                 (usandoTrilho()) &&
@@ -109,6 +109,7 @@ public class Maquinista {
                 LinhaTrem.linhaTrem1 = 'J';
                 andandoTrem = false;
                 LinhaTrem.trem1Andando = andandoTrem;
+                wait();
             }
         } else {
             if ( andandoTrem && 
@@ -123,6 +124,7 @@ public class Maquinista {
                 LinhaTrem.linhaTrem2 = 'J';
                 andandoTrem = false;
                 LinhaTrem.trem2Andando = andandoTrem;
+                wait();
             }
         }
 
