@@ -41,11 +41,6 @@ public class GeraThread extends Thread {
 
                 Trem trem2 = new TremAndando(motoristaAHr);
                 trem2.start();
-                //trem2.join();
-
-                //Trem trem3 = new TremAndando(motoristaAHr);
-                //trem3.start();
-                //trem3.join();
 
                 contador++;
 
@@ -55,11 +50,6 @@ public class GeraThread extends Thread {
 
                 Trem trem1 = new TremAndando(motoristaHr);
                 trem1.start();
-                //trem1.join();
-
-                //Trem trem2 = new TremAndando(motoristaHr);
-                //trem2.start();
-                //trem2.join();
 
                 contador++;
             } else {
@@ -74,36 +64,8 @@ public class GeraThread extends Thread {
                 }
                 contador++;
             }
-            /*
-            if (usandoJuncao == 1) {
-                Trem trem1 = new TremAndando(motoristaHr);
-                trem1.start();
-                trem1.join();
-            } else if (usandoJuncao == 0) {
-                Trem trem2 = new TremAndando(motoristaAHr);
-                trem2.start();
-                trem2.join();
-            } else {
-                Trem trem1 = new TremAndando(motoristaHr);
-                Trem trem2 = new TremAndando(motoristaAHr);
-                trem1.start();
-                trem2.start();
-                trem1.join();
-                trem2.join();
-            }
-            */
         } catch (Exception e) {
             e.printStackTrace();
         }
-        /*
-        int opcoes = aleatorio.nextInt(2);
-        if (opcoes == 0) {
-            Trem trem1 = new Trem(motoristaHr);
-            trem1.start();
-        } else {
-            Trem trem2 = new Trem(motoristaAHr);
-            trem2.start();
-        }
-        */
     }
 }

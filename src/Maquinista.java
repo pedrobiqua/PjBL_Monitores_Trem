@@ -143,7 +143,6 @@ public class Maquinista {
             // Sentido horário
             if (sentidoTrem == 0) {
                 if ((setorTrem % 2) == 0) {
-                    //Arrays.fill(LinhaTrem.posicaoLinhaB, false);
                     LinhaTrem.posicaoTrem1 = casaTrem;
                     LinhaTrem.linhaTrem1 = 'A';
                     LinhaTrem.posicaoLinhaB[casaTremAnterior] = false;
@@ -156,7 +155,6 @@ public class Maquinista {
                 } else {
                     casaTremAnterior = casaTrem;
                     novaCasa = casaTrem + novaCasa;
-                    //Arrays.fill(LinhaTrem.posicaoLinhaA, false);
                     LinhaTrem.posicaoTrem1 = casaTrem;
                     LinhaTrem.linhaTrem1 = 'B';
                     LinhaTrem.posicaoLinhaA[casaTrem] = false;
@@ -176,7 +174,6 @@ public class Maquinista {
             // Sentido anti-horário
             } else {
                 if ((setorTrem % 2) == 0) {
-                    //Arrays.fill(LinhaTrem.posicaoLinhaA, false);
                     LinhaTrem.posicaoTrem2 = casaTrem;
                     LinhaTrem.posicaoLinhaA[casaTremAnterior] = false;
                     this.posicaoTremA[casaTremAnterior] = false;
@@ -188,7 +185,6 @@ public class Maquinista {
                 } else {
                     casaTremAnterior = casaTrem;
                     novaCasa = casaTrem - novaCasa;
-                    //Arrays.fill(LinhaTrem.posicaoLinhaB, false);
                     LinhaTrem.posicaoTrem2 = casaTrem;
                     LinhaTrem.linhaTrem2 = 'A';
                     LinhaTrem.posicaoLinhaB[casaTrem] = false;
@@ -221,7 +217,6 @@ public class Maquinista {
             ) 
             {
                 System.out.println("TREM NO SENTIDO A ESPERANDO B PASSAR");
-                //LinhaTrem.pontoDeJuncao[casaTrem] = sentidoTrem;
                 wait();
             }    
             andandoTrem = true;
@@ -235,7 +230,6 @@ public class Maquinista {
             ) 
             {
                 System.out.println("TREM NO SENTIDO B ESPERANDO A PASSAR");
-                //LinhaTrem.pontoDeJuncao[casaTrem] = sentidoTrem;
                 wait();
             }
             LinhaTrem.pontoDeJuncao[LinhaTrem.posicaoTrem1] = -1;
